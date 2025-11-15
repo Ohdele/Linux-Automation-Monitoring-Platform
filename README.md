@@ -1,1 +1,1 @@
-# Project 3: Linux Automation & Monitoring Platform
+Project 3: Automation & Monitoring
