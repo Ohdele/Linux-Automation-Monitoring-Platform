@@ -3,3 +3,10 @@ Project 3: Automation & Monitoring
 ## 1: System Health Check and Cron Job
 
 Automated system health checks monitors disk and Memory usage via a shell script and scheduled execution using `cron` to maintain system awareness. [View Output in docs/task1-output.txt]
+
+
+## 2: Automated Backup and Cleanup
+
+A daily backup script (scripts/backup-clean.sh) archives the project directory to /var/backups using tar and automatically deletes backups older than 7 days. The task includes creating the script, adjusting paths, setting execution permissions, testing the script, verifying backup creation in /var/backups, and scheduling daily execution via a cron job.
+
+[View Output in docs/task2-output.txt]
