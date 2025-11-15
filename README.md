@@ -12,6 +12,11 @@ A daily backup script (scripts/backup-clean.sh) archives the project directory t
 [View Output in docs/task2-output.txt]
 
 
-## Task 3: Configuration Management with Ansible
+## 3: Configuration Management with Ansible
 
 Ansible playbooks were created and executed to automatically provision the full LAMP stack (Apache, MariaDB, PHP) and deploy a test application file. [View Output in docs/task3-output.txt]
+
+
+## 4: Advanced Monitoring and Alerting
+
+A Python script was implemented to perform application-level health checks (verifying the web server and content) and utilize `notify-send` to deliver critical desktop alerts upon failure. [View Output in docs/task4-output.txt]
