@@ -1,0 +1,71 @@
+--- Task 3: Ansible Automation and LAMP Deployment ---
+
+# 1. Create Ansible Inventory (hosts.ini) and Ping Playbook (ping.yml)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ cat << 'EOF_INNER' > ansible/hosts.ini
+[lamp_servers]
+localhost ansible_connection=local
+EOF_INNER
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ cat << 'EOF_INNER2' > ansible/ping.yml
+---
+- name: Ping Test
+  hosts: lamp_servers
+  gather_facts: no
+  tasks:
+    - name: Ping all servers
+      ping:
+EOF_INNER2
+
+# 2. Install Ansible (Initial attempt failed)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ ansible-playbook -i ansible/hosts.ini ansible/ping.yml
+Command 'ansible-playbook' not found...
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ sudo apt install ansible -y
+
+# 3. Test Connectivity
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ ansible-playbook -i ansible/hosts.ini ansible/ping.yml
+PLAY [Ping Test] ***************************************************************
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+TASK [Ping all servers] ********************************************************
+ok: [localhost]
+PLAY RECAP *********************************************************************
+localhost : ok=1  changed=0  unreachable=0  failed=0  skipped=0  rescued=0  ignored=0
+
+# 4. Run LAMP Installation Playbook (install-lamp.yml)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ ansible-playbook -i ansible/hosts.ini ansible/install-lamp.yml
+PLAY [Install LAMP Stack components (Apache, MariaDB, PHP)] ********************
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+TASK [Update apt cache] ********************************************************
+ok: [localhost]
+TASK [Install Apache web server] ***********************************************
+changed: [localhost]
+TASK [Install MariaDB server] **************************************************
+changed: [localhost]
+TASK [Install PHP and required modules] ****************************************
+changed: [localhost] => (item=php)
+changed: [localhost] => (item=php-mysql)
+changed: [localhost] => (item=libapache2-mod-php)
+changed: [localhost] => (item=php-cli)
+TASK [Ensure Apache service is running and enabled] ****************************
+ok: [localhost]
+PLAY RECAP *********************************************************************
+localhost : ok=6  changed=3  unreachable=0  failed=0  skipped=0  rescued=0  ignored=0
+
+# 5. Run Deployment Playbook (deploy-app.yml)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ ansible-playbook -i ansible/hosts.ini ansible/deploy-app.yml
+PLAY [Deploy Test PHP File] ****************************************************
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+TASK [Create index.php with PHP info content] **********************************
+changed: [localhost]
+TASK [Restart Apache to ensure configuration is fresh] *************************
+changed: [localhost]
+PLAY RECAP *********************************************************************
+localhost : ok=3  changed=2  unreachable=0  failed=0  skipped=0  rescued=0  ignored=0
+
+# 6. Verify Web Deployment
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ sudo apt install curl -y
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ curl http://localhost/index.php | head -n 4
+<h1>LAMP Stack Deployment Successful!</h1>Project: LAMP-Stack-Ops-Automation
+... (omitted HTML/PHP details)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$
