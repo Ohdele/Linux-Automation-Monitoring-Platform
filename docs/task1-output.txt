@@ -1,7 +1,7 @@
 --- Task 1: System Health Check Script and Cron Job Setup ---
 
 # 1. Create Health Check Script (scripts/health-check.sh)
-dele@VPNSERVER:~/Project3-Automation-Monitoring$ cat << 'EOF' > scripts/health-check.sh
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ cat << 'EOF' > scripts/health-check.sh
 #!/bin/bash
 # Simple health check script
 
@@ -18,14 +18,14 @@ echo "-----------------------------------" >> $LOG_FILE
 EOF
 
 # 2. Fix Path Issue (using sed) and Set Permissions
-dele@VPNSERVER:~/Project3-Automation-Monitoring$ sed -i 's|../logs/|logs/|' scripts/health-check.sh
-dele@VPNSERVER:~/Project3-Automation-Monitoring$ chmod +x scripts/health-check.sh
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ sed -i 's|../logs/|logs/|' scripts/health-check.sh
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ chmod +x scripts/health-check.sh
 
 # 3. Test Script Execution
-dele@VPNSERVER:~/Project3-Automation-Monitoring$ ./scripts/health-check.sh
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ ./scripts/health-check.sh
 
 # 4. Verify Log File Content
-dele@VPNSERVER:~/Project3-Automation-Monitoring$ cat logs/health_check_*.log
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ cat logs/health_check_*.log
 --- System Health Check: Sat Nov 15 02:29:38 AM UTC 2025 ---
 Disk Usage:
 /dev/sda3      24G   14G 9.1G  61% /
@@ -35,10 +35,10 @@ Mem:           3.8Gi       776Mi       2.2Gi         30Mi       928Mi       2.8G
 -----------------------------------
 
 # 5. Verify Cron Job Setup
-dele@VPNSERVER:~/Project3-Automation-Monitoring$ crontab -l
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ crontab -l
 # ... (omitted cron comments for brevity) ...
 # m h  dom mon dow  command
 
 # Run system health check daily at 1:00 AM
-0 1 * * * /home/dele/Project3-Automation-Monitoring/scripts/health-check.sh
-dele@VPNSERVER:~/Project3-Automation-Monitoring$
+0 1 * * * /home/dele/LAMP-Stack-Ops-Automation/scripts/health-check.sh
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$
