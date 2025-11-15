@@ -1,0 +1,21 @@
+---
+- name: Deploy Test PHP File
+  hosts: lamp_servers
+  become: yes
+  tasks:
+    - name: Create index.php with PHP info content
+      copy:
+        content: |
+          <?php
+          echo "<h1>LAMP Stack Deployment Successful!</h1>";
+          echo "Project: LAMP-Stack-Ops-Automation";
+          phpinfo();
+        dest: /var/www/html/index.php
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Restart Apache to ensure configuration is fresh
+      service:
+        name: apache2
+        state: restarted
