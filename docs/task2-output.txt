@@ -1,0 +1,52 @@
+--- Task 2: Automated Backup Script and Cron Job Setup ---
+
+# 1. Create Backup Script (scripts/backup-clean.sh)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ cat << 'EOF_INNER' > scripts/backup-clean.sh
+#!/bin/bash
+# Automated Backup and Cleanup Script
+
+BACKUP_DIR="/var/backups/project3"
+SOURCE_DIR="/home/dele/LAMP-Stack-Ops-Automation"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+RETENTION_DAYS=7
+
+# 1. Create backup directory if it doesn't exist
+mkdir -p $BACKUP_DIR
+
+# 2. Create compressed archive backup
+tar -czf $BACKUP_DIR/project3_backup_$TIMESTAMP.tar.gz $SOURCE_DIR
+
+# 3. Clean up backups older than retention period
+find $BACKUP_DIR -type f -name "*.tar.gz" -mtime +$RETENTION_DAYS -delete
+
+echo "Backup completed and files older than $RETENTION_DAYS days cleaned."
+EOF_INNER
+
+# 2. Fix Script Path (using sed)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ sed -i 's|Project3-Automation-Monitoring|LAMP-Stack-Ops-Automation|' scripts/backup-clean.sh
+
+# 3. Set Permissions
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ chmod +x scripts/backup-clean.sh
+
+# 4. Test Script Execution (Requires sudo due to /var/backups)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ sudo ./scripts/backup-clean.sh
+[sudo] password for dele: 
+tar: Removing leading `/' from member names
+Backup completed and files older than 7 days cleaned.
+
+# 5. Verify Backup File Creation
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ sudo ls -l /var/backups/project3/
+total 20
+-rw-r--r-- 1 root root 18417 Nov 15 04:53 project3_backup_20251115_045329.tar.gz
+
+# 6. Verify Final Cron Job Setup (Both Task 1 and Task 2)
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$ crontab -l
+# ... (omitted cron comments for brevity) ...
+# m h  dom mon dow  command
+
+# Run system health check daily at 1:00 AM
+0 1 * * * /home/dele/LAMP-Stack-Ops-Automation/scripts/health-check.sh
+
+# Run daily backup and cleanup at 2:00 AM
+0 2 * * * sudo /home/dele/LAMP-Stack-Ops-Automation/scripts/backup-clean.sh
+dele@VPNSERVER:~/LAMP-Stack-Ops-Automation$
