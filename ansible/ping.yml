@@ -1,0 +1,7 @@
+---
+- name: Ping Test
+  hosts: lamp_servers
+  gather_facts: no
+  tasks:
+    - name: Ping all servers
+      ping:
