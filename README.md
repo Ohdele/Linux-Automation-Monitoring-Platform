@@ -10,3 +10,8 @@ Automated system health checks monitors disk and Memory usage via a shell script
 A daily backup script (scripts/backup-clean.sh) archives the project directory to /var/backups using tar and automatically deletes backups older than 7 days. The task includes creating the script, adjusting paths, setting execution permissions, testing the script, verifying backup creation in /var/backups, and scheduling daily execution via a cron job.
 
 [View Output in docs/task2-output.txt]
+
+
+## Task 3: Configuration Management with Ansible
+
+Ansible playbooks were created and executed to automatically provision the full LAMP stack (Apache, MariaDB, PHP) and deploy a test application file. [View Output in docs/task3-output.txt]
